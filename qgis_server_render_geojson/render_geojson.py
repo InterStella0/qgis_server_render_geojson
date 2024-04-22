@@ -21,19 +21,16 @@ __author__ = 'Matthias Kuhn'
 __date__ = 'May 2020'
 __copyright__ = '(C) 2020, Matthias Kuhn - OPENGIS.ch'
 
-import sys
 import os
-import shutil
-import tempfile
-import urllib.request
 import traceback
-
-from qgis.server import QgsServerFilter
-from qgis.core import QgsMapSettings, QgsMapRendererParallelJob, QgsVectorLayer, QgsMessageLog, Qgis, QgsReadWriteContext, QgsRectangle
+import urllib.request
 
 from PyQt5.QtCore import QSize, QByteArray, QBuffer, QIODevice, QEventLoop, Qt, QFile
 from PyQt5.QtGui import QColor
 from PyQt5.QtXml import QDomDocument
+from qgis.core import QgsMapSettings, QgsMapRendererParallelJob, QgsVectorLayer, QgsMessageLog, QgsReadWriteContext, \
+    QgsRectangle
+from qgis.server import QgsServerFilter
 
 
 class ParameterError(Exception):
@@ -117,7 +114,6 @@ class RenderGeojsonFilter(QgsServerFilter):
                 except (ValueError, AttributeError):
                     raise ParameterError('Parameter BBOX must be specified in the form `min_x,min_y,max_x,max_y`.')
 
-                url = geojson
                 geojson_file_name = self._resolve_url(geojson)
 
                 if '$type' in style:
@@ -155,7 +151,7 @@ class RenderGeojsonFilter(QgsServerFilter):
 
                 img = renderer.renderedImage()
                 img.setDotsPerMeterX(dpi * 39.37)
-                img.setDotsPerMeterY(dpi * 39.37);
+                img.setDotsPerMeterY(dpi * 39.37)
                 image_data = QByteArray()
                 buf = QBuffer(image_data)
                 buf.open(QIODevice.WriteOnly)
